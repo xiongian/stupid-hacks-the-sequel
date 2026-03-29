@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Ion Not Arriving",
+  title: "ion know",
   description: "The only transit planner that tells you when the Ion won't be there",
 };
 
