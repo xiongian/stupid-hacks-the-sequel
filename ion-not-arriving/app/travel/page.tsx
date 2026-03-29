@@ -4,7 +4,7 @@ import { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import type { Station } from "../components/IonMap";
-import ScrollWheel from "../components/ScrollWheel";
+import PaginatedDropdown from "../components/PaginatedDropdown";
 import Link from "next/link";
 
 const IonMap = dynamic(() => import("../components/IonMap"), { ssr: false });
@@ -41,24 +41,21 @@ function getNotArrivingTimes(arrivalMinutes: number[], windowHours = 2): string[
 const MODE_BUTTONS: { id: string; label: string }[] = [
   { id: "ik", label: "ik (ion know)" },
   { id: "idk", label: "idk (ion don't know)" },
-  { id: "2016", label: "2016" },
+  { id: "2016", label: "#2016" },
 ];
 
 function Logo() {
   return (
-    <div
-      className="flex items-center justify-center font-bold text-sm tracking-widest border-2 px-3 py-1"
-      style={{ borderColor: "#FFD100", color: "#FFD100", minWidth: 80 }}
-    >
-      [ LOGO ]
-    </div>
+    <img
+      src="/stupid_hacks_logo.png"
+      alt="Stupid Hacks Logo"
+      className="h-12"
+    />
   );
 }
 
 /* ──────────────────────────────────────────────
    TUTORIAL OVERLAY
-   Dims everything except the mode buttons,
-   with a pulsing callout. First-time only.
    ────────────────────────────────────────────── */
 function TutorialOverlay({ onDismiss, onExit }: { onDismiss: () => void; onExit: () => void }) {
   return (
@@ -162,8 +159,8 @@ function IonKnowPanel({ station }: { station: Station | undefined }) {
   if (!station) {
     return (
       <div
-        className="flex-1 flex items-center justify-center text-center text-xs p-8"
-        style={{ color: "#006BB7" }}
+        className="flex-1 flex items-center justify-center text-center p-8"
+        style={{ color: "#FFFFFF" }}
       >
         Select a station on the map to find out what we know.
       </div>
@@ -174,7 +171,7 @@ function IonKnowPanel({ station }: { station: Station | undefined }) {
     <div className="flex-1 flex flex-col items-center justify-center p-8 gap-6">
       <div
         className="px-4 py-3 w-full"
-        style={{ background: "#006BB7", borderBottom: "2px solid #FFD100" }}
+        style={{ borderBottom: "3px solid #FFD100" }}
       >
         <div className="font-bold text-base" style={{ color: "#FFFFFF" }}>
           {station.name}
@@ -188,7 +185,7 @@ function IonKnowPanel({ station }: { station: Station | undefined }) {
         >
           ion know
         </div>
-        <div className="text-xs text-center" style={{ color: "#444466" }}>
+        <div className="text-xs text-center" style={{ color: "rgba(255,255,255,0.5)" }}>
           We simply do not know. Nobody knows. The Ion works in mysterious ways.
         </div>
       </div>
@@ -217,8 +214,8 @@ function IonDontKnowPanel({
   if (!station) {
     return (
       <div
-        className="flex-1 flex items-center justify-center text-center text-xs p-8"
-        style={{ color: "#006BB7" }}
+        className="flex-1 flex items-center justify-center text-center p-8"
+        style={{ color: "#FFFFFF" }}
       >
         Select a station on the map to see when the ION will not arrive.
       </div>
@@ -229,7 +226,7 @@ function IonDontKnowPanel({
     <>
       <div
         className="px-4 py-3 shrink-0"
-        style={{ background: "#006BB7", borderBottom: "2px solid #FFD100" }}
+        style={{ borderBottom: "3px solid #FFD100" }}
       >
         <div className="font-bold text-base" style={{ color: "#FFFFFF" }}>
           {station.name}
@@ -247,8 +244,8 @@ function IonDontKnowPanel({
             className="py-2 px-3 text-sm font-medium text-left transition-colors"
             style={
               direction === dir
-                ? { background: "#FFD100", color: "#1A1A2E", border: "2px solid #FFD100" }
-                : { background: "transparent", color: "#FFFFFF", border: "2px solid #006BB7" }
+                ? { background: "#FFD100", color: "#006BB7", border: "2px solid #FFD100" }
+                : { background: "transparent", color: "#FFFFFF", border: "2px solid #FFFFFF" }
             }
           >
             → {headsigns[dir] ?? `Direction ${dir}`}
@@ -258,15 +255,7 @@ function IonDontKnowPanel({
 
       {direction !== null && (
         <div className="flex flex-col flex-1 px-4 pb-4">
-          <div className="text-xs mb-1 shrink-0" style={{ color: "#006BB7" }}>
-            Times the ION will{" "}
-            <span style={{ color: "#FFD100" }} className="font-bold">NOT</span>{" "}
-            arrive · next 2 hrs · {notArrivingTimes.length} slots
-          </div>
-          <ScrollWheel times={notArrivingTimes} />
-          <div className="text-xs mt-3 shrink-0" style={{ color: "#444466" }}>
-            * Based on GRT GTFS schedule. The ION may also not arrive at scheduled times.
-          </div>
+          <PaginatedDropdown times={notArrivingTimes} />
         </div>
       )}
     </>
@@ -283,17 +272,17 @@ function Panel2016() {
       <div className="text-lg font-bold" style={{ color: "#FFD100" }}>
         it&apos;s 2016
       </div>
-      <div className="text-sm" style={{ color: "#006BB7" }}>
+      <div className="text-sm" style={{ color: "#FFFFFF" }}>
         the ion doesn&apos;t exist yet
       </div>
-      <div className="text-xs" style={{ color: "#444466", maxWidth: 200 }}>
+      <div className="text-xs" style={{ color: "rgba(255,255,255,0.5)", maxWidth: 200 }}>
         construction is ongoing. your commute is ruined by roadwork instead. take the 200 iXpress
         and cope.
       </div>
-      <div className="text-xs mt-4" style={{ color: "#333" }}>
+      <div className="text-xs mt-4" style={{ color: "rgba(255,255,255,0.4)" }}>
         estimated completion: 2018
       </div>
-      <div className="text-xs" style={{ color: "#555" }}>
+      <div className="text-xs" style={{ color: "rgba(255,255,255,0.6)" }}>
         (it opened in 2019 lol)
       </div>
     </div>
@@ -364,18 +353,18 @@ function TravelPageInner() {
   const is2016 = mode === "2016";
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: "#1A1A2E", color: "#FFFFFF" }}>
+    <div className="min-h-screen flex flex-col" style={{ background: "#FFFFFF", color: "#006BB7" }}>
       {showTutorial && <TutorialOverlay onDismiss={dismissTutorial} onExit={exitTutorial} />}
 
-      {/* Header */}
+      {/* Header — white bg with blue text and yellow accent */}
       <header
         className="flex items-center gap-4 px-6 py-3 shrink-0"
-        style={{ background: "#006BB7", borderBottom: "3px solid #FFD100" }}
+        style={{ background: "#FFFFFF", borderBottom: "4px solid #FFD100" }}
       >
         <Logo />
         <div className="flex-1">
-          <div className="font-bold text-xl tracking-tight" style={{ color: "#FFFFFF" }}>
-            Ion Not Arriving
+          <div className="font-bold text-xl" style={{ color: "#006BB7" }}>
+            ion know
           </div>
           <div className="text-xs" style={{ color: "#FFD100" }}>
             Waterloo Region&apos;s most useless transit planner
@@ -395,8 +384,8 @@ function TravelPageInner() {
               className="px-3 py-1.5 text-xs font-bold rounded transition-colors whitespace-nowrap"
               style={
                 mode === m.id
-                  ? { background: "#FFD100", color: "#1A1A2E" }
-                  : { background: "transparent", color: "#FFFFFF", border: "1px solid rgba(255,255,255,0.3)" }
+                  ? { background: "#FFD100", color: "#006BB7" }
+                  : { background: "transparent", color: "#006BB7", border: "1px solid rgba(0,107,183,0.3)" }
               }
             >
               {m.label}
@@ -412,7 +401,7 @@ function TravelPageInner() {
           {loading && !is2016 && (
             <div
               className="absolute inset-0 flex items-center justify-center text-sm"
-              style={{ background: "#0A0A1A", color: "#006BB7" }}
+              style={{ background: "#FFFFFF", color: "#006BB7" }}
             >
               Loading ION schedule…
             </div>
@@ -420,7 +409,7 @@ function TravelPageInner() {
           {error && (
             <div
               className="absolute inset-0 flex items-center justify-center text-sm p-8 text-center"
-              style={{ background: "#0A0A1A", color: "#FFD100" }}
+              style={{ background: "#FFFFFF", color: "#006BB7" }}
             >
               {error}
             </div>
@@ -454,10 +443,10 @@ function TravelPageInner() {
           )}
         </div>
 
-        {/* Side panel */}
+        {/* Side panel — blue bg */}
         <div
           className="w-72 shrink-0 flex flex-col overflow-y-auto"
-          style={{ borderLeft: "2px solid #006BB7", background: "#1A1A2E" }}
+          style={{ borderLeft: "3px solid #FFD100", background: "#006BB7" }}
         >
           {is2016 ? (
             <Panel2016 />
@@ -485,7 +474,7 @@ export default function TravelPage() {
       fallback={
         <div
           className="min-h-screen flex items-center justify-center"
-          style={{ background: "#1A1A2E", color: "#006BB7" }}
+          style={{ background: "#FFFFFF", color: "#006BB7" }}
         >
           Loading…
         </div>

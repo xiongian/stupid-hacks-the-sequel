@@ -12,7 +12,6 @@ const VISIBLE_ITEMS = 5;
 export default function ScrollWheel({ times }: ScrollWheelProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Scroll to top when times list changes
   useEffect(() => {
     if (containerRef.current) {
       containerRef.current.scrollTop = 0;
@@ -26,23 +25,23 @@ export default function ScrollWheel({ times }: ScrollWheelProps) {
 
   return (
     <div className="relative w-full select-none" style={{ height: containerHeight }}>
-      {/* Fade top */}
+      {/* Fade top — blends into #006BB7 sidebar */}
       <div
         className="absolute inset-x-0 top-0 z-10 pointer-events-none"
         style={{
           height: padding,
-          background: "linear-gradient(to bottom, #1A1A2E, transparent)", // #1A1A2E = page bg
+          background: "linear-gradient(to bottom, #006BB7 40%, transparent)",
         }}
       />
-      {/* Highlight band */}
+      {/* Highlight band — #FFD100 yellow border, slightly lighter blue fill */}
       <div
         className="absolute inset-x-0 z-10 pointer-events-none"
         style={{
           top: padding,
           height: ITEM_HEIGHT,
-          borderTop: "2px solid #FFD100",   // #FFD100 = ION Yellow
+          borderTop: "2px solid #FFD100",
           borderBottom: "2px solid #FFD100",
-          background: "rgba(0, 107, 183, 0.15)", // #006BB7 = ION Blue, low opacity
+          background: "rgba(255, 255, 255, 0.1)",
         }}
       />
       {/* Fade bottom */}
@@ -50,7 +49,7 @@ export default function ScrollWheel({ times }: ScrollWheelProps) {
         className="absolute inset-x-0 bottom-0 z-10 pointer-events-none"
         style={{
           height: padding,
-          background: "linear-gradient(to top, #1A1A2E, transparent)", // #1A1A2E = page bg
+          background: "linear-gradient(to top, #006BB7 40%, transparent)",
         }}
       />
 
@@ -64,7 +63,6 @@ export default function ScrollWheel({ times }: ScrollWheelProps) {
           msOverflowStyle: "none",
         }}
       >
-        {/* Top padding */}
         <div style={{ height: padding }} />
 
         {times.map((time) => (
@@ -77,7 +75,6 @@ export default function ScrollWheel({ times }: ScrollWheelProps) {
           </div>
         ))}
 
-        {/* Bottom padding */}
         <div style={{ height: padding }} />
       </div>
     </div>
