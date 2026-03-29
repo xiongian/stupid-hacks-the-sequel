@@ -35,7 +35,7 @@ export default function PaginatedDropdown({ times }: PaginatedDropdownProps) {
           color: "#FFFFFF",
         }}
       >
-        <span>{"NOT Arriving At"}</span>
+        <span>{"non-arrival times"}</span>
         <span style={{ color: "#FFD100" }}>{open ? "▲" : "▼"}</span>
       </button>
 

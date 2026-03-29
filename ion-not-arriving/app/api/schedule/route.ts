@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import JSZip from "jszip";
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 
 const GTFS_URL =
   "https://webapps.regionofwaterloo.ca/api/grt-routes/api/staticfeeds/2";
